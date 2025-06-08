@@ -1,161 +1,144 @@
-# Angular Project Setup
+# E-commerce Website
 
-## Installation
+A modern, feature-rich e-commerce website built with Angular and Tailwind CSS.
 
-```bash
-pnpm create @angular@latest -s -t -S --experimental-zoneless --ssr false --style scss [yourProjectName]
+## Features
+
+- 📱 Responsive layout optimized for all screen sizes
+- 🛒 Full shopping cart functionality
+  - Add/remove products
+  - Update quantities
+  - Persist cart state
+- 💳 Secure checkout process
+- ✨ Interactive elements with hover states
+- 📦 Product catalog with detailed views
+- 💰 Accurate order calculations
+  - Product totals
+  - Fixed shipping cost ($50)
+  - VAT (20% of product total)
+- ✅ Form validation
+- 🎉 Order confirmation system
+
+## Technical Stack
+
+- **Frontend Framework**: Angular
+- **Styling**: Tailwind CSS
+- **State Management**: Angular Services
+- **Form Handling**: Angular Reactive Forms
+- **Data Storage**: Local Storage for cart persistence
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── product-list/      # Product catalog display
+│   │   ├── product-detail/    # Individual product view
+│   │   ├── shopping-cart/     # Cart management
+│   │   ├── checkout/          # Checkout process
+│   │   ├── navbar/           # Navigation component
+│   │   └── footer/           # Footer component
+│   ├── services/
+│   │   ├── cart.service.ts    # Shopping cart logic
+│   │   └── product.service.ts # Product data management
+│   ├── models/
+│   │   ├── product.ts         # Product interface
+│   │   └── cart-item.ts       # Cart item interface
+│   └── shared/
+│       └── components/        # Reusable UI components
 ```
 
-Manually add the following props to the angular.json.
-The path is `projects.[yourProjectName].schematics.@schematics/angular:component`
+## Getting Started
 
-- "changeDetection": "OnPush"
-- "flat": true
+### Prerequisites
 
-## UI
+- Node.js (v18 or higher)
+- npm or pnpm package manager
 
-```bash
-pnpm ng add @angular/material
-pnpm install -D tailwindcss postcss autoprefixer
-pnpm tailwindcss init
-```
+### Installation
 
-Open `tailwind.config.js` and add the following code to `module.exports`:
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd ecommerce
+   ```
 
-```javascript
-module.exports = {
-  // ...
-  content: ["./src/**/*.{html,ts}"],
-};
-```
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-At the beginning of `styles.scss`, add the following code:
+3. Start the development server:
+   ```bash
+   ng serve
+   ```
 
-```scss
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
+4. Open your browser and navigate to `http://localhost:4200`
+
+## Development Guidelines
+
+### Coding Standards
+
+- Follow Angular style guide
+- Use TypeScript strict mode
+- Implement lazy loading for optimized performance
+- Write unit tests for components and services
+
+### CSS Guidelines
+
+- Use Tailwind CSS utility classes
+- Follow mobile-first approach
+- Maintain consistent spacing and color schemes
+- Use CSS variables for theme colors
+
+### Git Workflow
+
+1. Create feature branches from `main`
+2. Use conventional commits
+3. Submit pull requests for review
+4. Merge after approval
 
 ## Testing
 
-Install the Angular Testing Library along the user-event library:
-
+Run unit tests:
 ```bash
-pnpm i -D @testing-library/angular @testing-library/dom @testing-library/user-event
+ng test
 ```
 
-Next, install Playwright and install the accompanying browsers:
-
+Run end-to-end tests:
 ```bash
-pnpm i -D @playwright/test
-pnpm playwright install
+ng e2e
 ```
 
----
+## Build
 
-## Code Quality
-
-For code quality, we install `angular-eslint`, `eslint-plugin-unused-imports`, `husky`, `prettier`,`lint-staged` and Sheriff.
-
+Generate production build:
 ```bash
-pnpm ng add @angular-eslint/schematics
-pnpm i -D eslint-plugin-unused-imports husky prettier lint-staged @softarc/{sheriff-core,eslint-plugin-sheriff}
+ng build --prod
 ```
 
-To integrate `eslint-plugin-unused-imports` and sheriff into ESLint, add the following to `eslint.config.js`:
+The build artifacts will be stored in the `dist/` directory.
 
-```javascript
-// exsting imports...
+## Features in Detail
 
-const sheriff = require("@softarc/eslint-plugin-sheriff");
-const unusedImports = require("eslint-plugin-unused-imports");
+### Shopping Cart
 
-module.exports = tseslint.config(
-  // exsting setup...
-  {
-    files: ["**/*.ts"],
-    extends: [sheriff.configs.all],
-  },
-  {
-    plugins: { "unused-imports": unusedImports },
-    rules: {
-      "@typescript-eslint/no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "warn",
-        {
-          vars: "all",
-          varsIgnorePattern: "^_",
-          args: "after-used",
-          argsIgnorePattern: "^_",
-        },
-      ],
-    },
-  },
-);
-```
+- Real-time cart updates
+- Quantity adjustments
+- Price calculations including VAT
+- Cart persistence across sessions
 
-For defining barrel-less modulesyou can initialize the Sheriff configuration by running the following command:
+### Checkout Process
 
-```bash
-pnpm sheriff init
-```
+- Multi-step form validation
+- Shipping cost calculation
+- Order summary
+- Success confirmation
 
-Code formatting will be done by prettier, but only for staged files and before a commit:
+### Product Catalog
 
-```bash
-pnpm husky init
-```
-
-Create the `.lintstagedrc` with the following content:
-
-```text
-{
-  "*.{js,ts,json,html,scss,css,md}": [
-    "prettier --write"
-  ]
-}
-
-```
-
-`.husky/pre-commit`, should have the following content:
-
-```bash
-pnpm ng lint
-pnpm ng test --watch=false
-pnpm lint-staged --allow-empty
-```
-
-## State Management
-
-Next on the list is state management with the NgRx SignalStore. We also include the devtools extension for debugging purposes:
-
-```bash
-pnpm i @ngrx/signals @angular-architects/ngrx-toolkit
-```
-
-It is also important to use the official ESLint rules for NgRx:
-
-```bash
-pnpm i -D @ngrx/eslint-plugin-ngrx
-```
-
-Add the following to the ESLint configuration `eslint.config.js`:
-
-```javascript
-// existing imports...
-const ngrx = require("@ngrx/eslint-plugin/v9");
-
-module.exports = tseslint.config(
-  // existing config...
-  {
-    files: ["**/*.ts"],
-    extends: [...ngrx.configs.signals],
-  },
-);
-```
-
----
-
-**Enjoy your new Angular project setup! 🚀**
+- Grid and list views
+- Search functionality
+- Filtering options
+- Sorting capabilities
