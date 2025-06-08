@@ -1,96 +1,93 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Cart, CartItem } from '../models/cart-item.interface';
-import { Product } from '../models/product.interface';
+import { BehaviorSubject, map } from 'rxjs';
+import { Product } from './data.service';
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private readonly CART_STORAGE_KEY = 'shopping_cart';
-  private readonly SHIPPING_COST = 50;
-  private readonly VAT_RATE = 0.20;
-
-  private cartSubject = new BehaviorSubject<Cart>({
-    items: [],
-    subtotal: 0,
-    shipping: this.SHIPPING_COST,
-    vat: 0,
-    total: 0
-  });
+  private readonly STORAGE_KEY = 'audiophile_cart';
+  private cartSubject = new BehaviorSubject<CartItem[]>([]);
+  cart$ = this.cartSubject.asObservable();
 
   constructor() {
     this.loadCart();
   }
 
-  getCart(): Observable<Cart> {
-    return this.cartSubject.asObservable();
-  }
-
-  addToCart(product: Product, quantity: number = 1): void {
-    const currentCart = this.cartSubject.value;
-    const existingItem = currentCart.items.find(item => item.product.id === product.id);
-
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      currentCart.items.push({ product, quantity });
-    }
-
-    this.updateCartTotals(currentCart);
-    this.saveCart();
-  }
-
-  removeFromCart(productId: number): void {
-    const currentCart = this.cartSubject.value;
-    currentCart.items = currentCart.items.filter(item => item.product.id !== productId);
-    
-    this.updateCartTotals(currentCart);
-    this.saveCart();
-  }
-
-  updateQuantity(productId: number, quantity: number): void {
-    const currentCart = this.cartSubject.value;
-    const item = currentCart.items.find(item => item.product.id === productId);
-    
-    if (item) {
-      item.quantity = quantity;
-      this.updateCartTotals(currentCart);
-      this.saveCart();
+  private loadCart() {
+    const savedCart = localStorage.getItem(this.STORAGE_KEY);
+    if (savedCart) {
+      this.cartSubject.next(JSON.parse(savedCart));
     }
   }
 
-  clearCart(): void {
-    const emptyCart: Cart = {
-      items: [],
-      subtotal: 0,
-      shipping: this.SHIPPING_COST,
-      vat: 0,
-      total: 0
-    };
-    
-    this.cartSubject.next(emptyCart);
-    localStorage.removeItem(this.CART_STORAGE_KEY);
-  }
-
-  private updateCartTotals(cart: Cart): void {
-    cart.subtotal = cart.items.reduce((total, item) => 
-      total + (item.product.price * item.quantity), 0);
-    cart.vat = cart.subtotal * this.VAT_RATE;
-    cart.total = cart.subtotal + cart.shipping + cart.vat;
-    
+  private saveCart(cart: CartItem[]) {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cart));
     this.cartSubject.next(cart);
   }
 
-  private saveCart(): void {
-    localStorage.setItem(this.CART_STORAGE_KEY, JSON.stringify(this.cartSubject.value));
+  addToCart(product: Product, quantity: number) {
+    const currentCart = this.cartSubject.value;
+    const existingItem = currentCart.find(item => item.product.id === product.id);
+
+    if (existingItem) {
+      const updatedCart = currentCart.map(item =>
+        item.product.id === product.id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+      this.saveCart(updatedCart);
+    } else {
+      this.saveCart([...currentCart, { product, quantity }]);
+    }
   }
 
-  private loadCart(): void {
-    const savedCart = localStorage.getItem(this.CART_STORAGE_KEY);
-    if (savedCart) {
-      const cart: Cart = JSON.parse(savedCart);
-      this.cartSubject.next(cart);
+  updateQuantity(productId: number, quantity: number) {
+    const currentCart = this.cartSubject.value;
+    if (quantity <= 0) {
+      this.removeFromCart(productId);
+      return;
     }
+
+    const updatedCart = currentCart.map(item =>
+      item.product.id === productId
+        ? { ...item, quantity }
+        : item
+    );
+    this.saveCart(updatedCart);
+  }
+
+  removeFromCart(productId: number) {
+    const filteredCart = this.cartSubject.value.filter(
+      item => item.product.id !== productId
+    );
+    this.saveCart(filteredCart);
+  }
+
+  clearCart() {
+    this.saveCart([]);
+  }
+
+  getTotal() {
+    return this.cart$.pipe(
+      map(items => items.reduce(
+        (total, item) => total + (item.product.price * item.quantity), 
+        0
+      ))
+    );
+  }
+
+  getItemCount() {
+    return this.cart$.pipe(
+      map(items => items.reduce(
+        (count, item) => count + item.quantity, 
+        0
+      ))
+    );
   }
 }

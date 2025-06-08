@@ -3,8 +3,9 @@ import { HomeComponent } from './components/home.component';
 import { ProductListComponent } from './components/product-list.component';
 import { ProductDetailComponent } from './components/product-detail.component';
 import { ShoppingCartComponent } from './components/shopping-cart.component';
-import { CheckoutComponent } from './components/checkout.component';
+import { CheckoutComponent } from './pages/checkout.component';
 import { CategoryComponent } from './components/category.component';
+import { OrderConfirmationComponent } from './pages/order-confirmation.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'category/:category', component: CategoryComponent },
   { path: 'product/:slug', component: ProductDetailComponent },
+  { path: 'order-confirmation', component: OrderConfirmationComponent },
   { path: '**', redirectTo: '' }
 ];
