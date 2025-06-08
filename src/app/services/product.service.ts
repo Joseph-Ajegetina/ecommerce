@@ -10,10 +10,10 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>('assets/data.json');
+    return this.http.get<Product[]>('/data.json');
   }
 
-  getProduct(id: string): Observable<Product | undefined> {
+  getProduct(id: string): Observable<Product | undefined>  {
     return this.getProducts().pipe(
       map(products => products.find(product => product.id.toString() === id))
     );

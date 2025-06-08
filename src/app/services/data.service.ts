@@ -88,7 +88,7 @@ export class DataService {
   }
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>('assets/data.json');
+    return this.http.get<Product[]>('/data.json');
   }
 
   getProductsByCategory(category: string): Observable<Product[]> {

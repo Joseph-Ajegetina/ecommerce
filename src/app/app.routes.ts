@@ -4,6 +4,7 @@ import { ProductListComponent } from './components/product-list.component';
 import { ProductDetailComponent } from './components/product-detail.component';
 import { ShoppingCartComponent } from './components/shopping-cart.component';
 import { CheckoutComponent } from './components/checkout.component';
+import { CategoryComponent } from './components/category.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'cart', component: ShoppingCartComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: '**', redirectTo: '/' }
+  { path: 'category/:category', component: CategoryComponent },
+  { path: '**', redirectTo: '' }
 ];
