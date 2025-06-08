@@ -9,16 +9,16 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent, HttpClientModule],
   template: `
-    <div class="min-h-screen flex flex-col">
+    <div class="min-h-screen flex flex-col bg-white">
       <app-navbar />
-      <main class="flex-grow container mx-auto px-4 py-8">
+      <main class="flex-grow">
         <router-outlet />
       </main>
       <app-footer />
     </div>
-  `,
+  `,  
   styles: []
 })
 export class AppComponent {
-  title = 'Ecommerce';
+  title = 'Audiophile';
 }

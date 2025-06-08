@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../services/product.service';
-import { Product } from '../models/product.interface';
+import { DataService, Category, Product } from '../services/data.service';
 
 @Component({
   selector: 'app-home',
@@ -12,27 +11,27 @@ import { Product } from '../models/product.interface';
   styles: []
 })
 export class HomeComponent implements OnInit {
-  featuredProducts: Product[] = [];
+  categories: Category[] = [];
+  featuredProduct?: Product;
   isLoading = true;
 
-  constructor(
-    private productService: ProductService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.productService.getProducts().subscribe({
+    // Get categories
+    this.categories = this.dataService.getCategories();
+
+    // Get featured product (first new product)
+    this.dataService.getFeaturedProducts().subscribe({
       next: (products) => {
-        console.log('Received products:', products);
-        this.featuredProducts = products.slice(0, 3);
-        console.log('Featured products:', this.featuredProducts);
+        if (products.length > 0) {
+          this.featuredProduct = products[0];
+        }
         this.isLoading = false;
-        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error fetching products:', error);
         this.isLoading = false;
-        this.cdr.detectChanges();
       }
     });
   }
