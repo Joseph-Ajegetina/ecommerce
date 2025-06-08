@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar.component';
+import { FooterComponent } from './components/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, NavbarComponent, FooterComponent],
   template: `
-    <h1>Welcome to {{title}}!</h1>
-
-    <router-outlet />
+    <div class="min-h-screen flex flex-col">
+      <app-navbar />
+      <main class="flex-grow container mx-auto px-4 py-8">
+        <router-outlet />
+      </main>
+      <app-footer />
+    </div>
   `,
-  styles: [],
+  styles: []
 })
 export class AppComponent {
   title = 'angular-starter';
