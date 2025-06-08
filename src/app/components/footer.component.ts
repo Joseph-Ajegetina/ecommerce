@@ -35,7 +35,7 @@ import { RouterLink } from '@angular/router';
           <div>
             <h3 class="text-lg font-semibold mb-4">Contact</h3>
             <ul class="space-y-2 text-gray-300">
-              <li>Email: info@eshop.com</li>
+              <li>Email: infoshop.com</li>
               <li>Phone: (555) 123-4567</li>
               <li>Address: 123 E-commerce St</li>
             </ul>

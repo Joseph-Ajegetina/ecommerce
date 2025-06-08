@@ -2,31 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../services/product.service';
-import { CartService } from '../services/cart.service';
 import { Product } from '../models/product.interface';
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './product-list.component.html',
+  templateUrl: './home.component.html',
   styles: []
 })
-export class ProductListComponent implements OnInit {
-  products: Product[] = [];
+export class HomeComponent implements OnInit {
+  featuredProducts: Product[] = [];
 
-  constructor(
-    private productService: ProductService,
-    private cartService: CartService
-  ) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit() {
     this.productService.getProducts().subscribe(products => {
-      this.products = products;
+      // For demo, we'll just take the first 3 products as featured
+      this.featuredProducts = products.slice(0, 3);
     });
   }
-
-  addToCart(product: Product) {
-    this.cartService.addToCart(product, 1);
-  }
-}
+} 
