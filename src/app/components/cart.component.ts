@@ -92,6 +92,7 @@ export class CartComponent implements OnInit {
 
   clearCart() {
     this.cartService.clearCart();
+    this.dialogService.close();
   }
 
   close() {

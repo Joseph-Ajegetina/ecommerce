@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CartService } from '../services/cart.service';
-import { Observable } from 'rxjs';
+import { OrderConfirmationService } from '../services/order-confirmation.service';
+import { OrderConfirmationModalService } from '../services/order-confirmation-modal.service';
+import { Observable, take } from 'rxjs';
 import { CartItem } from '../services/cart.service';
+import { OrderConfirmationComponent } from './order-confirmation.component';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, OrderConfirmationComponent],
   template: `
     <div class="bg-[#F1F1F1] min-h-screen py-16">
       <div class="container mx-auto px-6">
@@ -216,6 +219,10 @@ import { CartItem } from '../services/cart.service';
         </div>
       </div>
     </div>
+
+    @if (orderConfirmationModalService.isOpen$ | async) {
+      <app-order-confirmation />
+    }
   `
 })
 export class CheckoutComponent implements OnInit {
@@ -226,7 +233,8 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cartService: CartService,
-    private router: Router
+    private orderConfirmationService: OrderConfirmationService,
+    public orderConfirmationModalService: OrderConfirmationModalService
   ) {}
 
   ngOnInit() {
@@ -271,8 +279,15 @@ export class CheckoutComponent implements OnInit {
 
   onSubmit() {
     if (this.checkoutForm.valid) {
-      console.log('Form submitted:', this.checkoutForm.value);
-      this.router.navigate(['/order-confirmation']);
+      // Take the latest values from cart and total
+      this.cart$.pipe(take(1)).subscribe(items => {
+        this.total$.pipe(take(1)).subscribe(total => {
+          // Store the order details
+          this.orderConfirmationService.setOrderDetails(items, total + 50); // Adding shipping cost
+          // Show the confirmation modal
+          this.orderConfirmationModalService.open();
+        });
+      });
     } else {
       Object.keys(this.checkoutForm.controls).forEach(key => {
         const control = this.checkoutForm.get(key);
