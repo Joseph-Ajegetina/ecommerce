@@ -41,7 +41,7 @@ export class CartService {
     this.saveCart();
   }
 
-  removeFromCart(productId: string): void {
+  removeFromCart(productId: number): void {
     const currentCart = this.cartSubject.value;
     currentCart.items = currentCart.items.filter(item => item.product.id !== productId);
     
@@ -49,7 +49,7 @@ export class CartService {
     this.saveCart();
   }
 
-  updateQuantity(productId: string, quantity: number): void {
+  updateQuantity(productId: number, quantity: number): void {
     const currentCart = this.cartSubject.value;
     const item = currentCart.items.find(item => item.product.id === productId);
     

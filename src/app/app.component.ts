@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar.component';
 import { FooterComponent } from './components/footer.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, HttpClientModule],
   template: `
     <div class="min-h-screen flex flex-col">
       <app-navbar />
@@ -19,5 +20,5 @@ import { FooterComponent } from './components/footer.component';
   styles: []
 })
 export class AppComponent {
-  title = 'angular-starter';
+  title = 'Ecommerce';
 }

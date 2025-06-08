@@ -19,25 +19,31 @@
   <!-- Featured Products -->
   <div class="container mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold mb-8">Featured Products</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      @for (product of featuredProducts; track product.id) {
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <img [src]="product.imageUrl" 
-               [alt]="product.name"
-               class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">{{product.name}}</h3>
-            <p class="text-gray-600 mb-4">{{product.description}}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-xl font-bold">${{product.price}}</span>
-              <button [routerLink]="['/products', product.id]"
-                      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                View Details
-              </button>
+    @if (isLoading) {
+      <div class="flex justify-center items-center min-h-[400px]">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (product of featuredProducts; track product.id) {
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img [src]="product.image.desktop" 
+                 [alt]="product.name"
+                 class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold mb-2">{{product.name}}</h3>
+              <p class="text-gray-600 mb-4">{{product.description}}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-xl font-bold">${{product.price}}</span>
+                <button [routerLink]="['/products', product.id]"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                  View Details
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   </div>
 </div> 

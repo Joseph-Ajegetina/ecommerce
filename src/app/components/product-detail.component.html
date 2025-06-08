@@ -1,0 +1,76 @@
+@if (isLoading) {
+  <div class="flex justify-center items-center min-h-[400px]">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+} @else if (product) {
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <img [src]="product.image.desktop" [alt]="product.name" class="w-full rounded-lg shadow-lg">
+      </div>
+      <div>
+        @if (product.new) {
+          <span class="text-orange-500 uppercase tracking-wider mb-4 block">New Product</span>
+        }
+        <h1 class="text-4xl font-bold mb-4">{{product.name}}</h1>
+        <p class="text-gray-600 mb-6">{{product.description}}</p>
+        <p class="text-2xl font-bold mb-6">${{product.price}}</p>
+        <button (click)="addToCart()"
+                class="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors">
+          Add to Cart
+        </button>
+        
+        <div class="mt-8">
+          <h2 class="text-2xl font-bold mb-4">Features</h2>
+          <p class="text-gray-600 whitespace-pre-line">{{product.features}}</p>
+        </div>
+        
+        @if (product.includes.length > 0) {
+          <div class="mt-8">
+            <h2 class="text-2xl font-bold mb-4">In the Box</h2>
+            <ul class="space-y-2">
+              @for (item of product.includes; track item.item) {
+                <li class="flex items-center">
+                  <span class="text-orange-500 font-bold mr-4">{{item.quantity}}x</span>
+                  <span class="text-gray-600">{{item.item}}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </div>
+    
+    @if (product.gallery) {
+      <div class="mt-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <img [src]="product.gallery.first.desktop" alt="Gallery 1" class="w-full rounded-lg">
+          <img [src]="product.gallery.second.desktop" alt="Gallery 2" class="w-full rounded-lg">
+          <img [src]="product.gallery.third.desktop" alt="Gallery 3" class="w-full rounded-lg">
+        </div>
+      </div>
+    }
+    
+    @if (product.others.length > 0) {
+      <div class="mt-16">
+        <h2 class="text-2xl font-bold text-center mb-8">You May Also Like</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          @for (other of product.others; track other.slug) {
+            <div class="text-center">
+              <img [src]="other.image.desktop" [alt]="other.name" class="w-full rounded-lg mb-4">
+              <h3 class="text-xl font-bold mb-4">{{other.name}}</h3>
+              <a [routerLink]="['/products', other.slug]" 
+                 class="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                See Product
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="text-center py-16">
+    <h2 class="text-2xl font-bold text-gray-600">Product not found</h2>
+  </div>
+} 

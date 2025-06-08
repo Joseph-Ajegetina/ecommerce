@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../services/product.service';
@@ -14,19 +14,31 @@ import { Product } from '../models/product.interface';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  isLoading = true;
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
+    this.productService.getProducts().subscribe({
+      next: (products) => {
+        this.products = products;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error fetching products:', error);
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
   addToCart(product: Product) {
     this.cartService.addToCart(product, 1);
+    this.cdr.detectChanges();
   }
 }
