@@ -13,5 +13,6 @@ export const routes: Routes = [
   { path: 'cart', component: ShoppingCartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'category/:category', component: CategoryComponent },
+  { path: 'product/:slug', component: ProductDetailComponent },
   { path: '**', redirectTo: '' }
 ];
