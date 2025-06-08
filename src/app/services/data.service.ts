@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, of, tap, map } from 'rxjs';
 
 export interface Product {
   id: number;
@@ -63,6 +63,7 @@ export interface Category {
   providedIn: 'root'
 })
 export class DataService {
+  private readonly STORAGE_KEY = 'audiophile_products';
   private readonly categories: Category[] = [
     {
       name: 'Headphones',
@@ -88,7 +89,18 @@ export class DataService {
   }
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>('/data.json');
+    // Try to get data from localStorage first
+    const cachedData = localStorage.getItem(this.STORAGE_KEY);
+    if (cachedData) {
+      return of(JSON.parse(cachedData));
+    }
+
+    // If no cached data, fetch from file and store in localStorage
+    return this.http.get<Product[]>('assets/data.json').pipe(
+      tap(products => {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(products));
+      })
+    );
   }
 
   getProductsByCategory(category: string): Observable<Product[]> {
