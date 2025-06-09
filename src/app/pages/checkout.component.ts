@@ -187,7 +187,7 @@ import { OrderConfirmationComponent } from './order-confirmation.component';
                 }
               </div>
 
-              <div class="space-y-2">
+              <div class="space-y-2 mb-8">
                 <div class="flex justify-between items-center">
                   <span class="text-[15px] text-black/50 uppercase">TOTAL</span>
                   <span class="text-[18px] font-bold">$ {{ (total$ | async)?.toLocaleString() }}</span>
@@ -198,20 +198,19 @@ import { OrderConfirmationComponent } from './order-confirmation.component';
                 </div>
                 <div class="flex justify-between items-center">
                   <span class="text-[15px] text-black/50 uppercase">VAT (INCLUDED)</span>
-                  <span class="text-[18px] font-bold">$ {{ ((total$ | async) || 0 * 0.2)?.toLocaleString() }}</span>
+                  <span class="text-[18px] font-bold">$ {{ ((total$ | async) || 0) * 0.2 | number:'1.0-0' }}</span>
                 </div>
                 <div class="flex justify-between items-center mt-6 pt-6 border-t">
                   <span class="text-[15px] text-black/50 uppercase">GRAND TOTAL</span>
                   <span class="text-[18px] font-bold text-primary">
-                    $ {{ ((total$ | async) || 0 + 50)?.toLocaleString() }}
+                    $ {{ ((total$ | async) || 0) + ((total$ | async) || 0) * 0.2 + 50 | number:'1.0-0' }}
                   </span>
                 </div>
               </div>
 
               <button type="submit"
-                      (click)="onSubmit()"
                       [disabled]="checkoutForm.invalid"
-                      class="w-full bg-primary text-white text-[13px] font-bold px-8 py-4 uppercase tracking-[1px] hover:bg-primary-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-8">
+                      class="w-full bg-primary text-white text-[13px] font-bold px-8 py-4 uppercase tracking-[1px] hover:bg-primary-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 Continue & Pay
               </button>
             }
