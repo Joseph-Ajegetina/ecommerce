@@ -12,15 +12,20 @@ import { AboutSectionComponent } from './shared/about-section.component';
     <!-- Hero Section -->
     <section class="bg-black">
       <div class="container mx-auto px-6 relative">
-        <div class="flex flex-col items-center text-center lg:items-start lg:text-left pt-[90px] pb-[110px] lg:pt-[128px] lg:pb-[158px]">
+        <picture class="absolute inset-0">
+          <source media="(min-width: 1024px)" srcset="assets/home/desktop/image-hero.jpg">
+          <source media="(min-width: 768px)" srcset="assets/home/tablet/image-header.jpg">
+          <img src="assets/home/mobile/image-header.jpg" 
+               alt="XX99 Mark II Headphones"
+               class="w-full h-full object-cover md:object-center lg:object-left">
+        </picture>
+        <div class="flex flex-col items-center text-center lg:items-start lg:text-left pt-[120px] pb-[120px] lg:pt-[128px] lg:pb-[158px] relative z-10">
           <div class="max-w-[380px]">
-            @if (true) {
-              <p class="text-white/50 tracking-[10px] uppercase mb-4 text-[14px]">New Product</p>
-            }
-            <h1 class="text-white text-[36px] md:text-[56px] font-bold tracking-[1.3px] md:tracking-[2px] uppercase mb-6 leading-[1.1]">
+            <p class="text-white/50 tracking-[10px] uppercase mb-6 text-[14px]">New Product</p>
+            <h1 class="text-white text-[36px] md:text-[56px] font-bold tracking-[2px] uppercase mb-6 leading-[1.1]">
               XX99 Mark II<br>Headphones
             </h1>
-            <p class="text-white/75 text-[15px] leading-[25px] mb-8">
+            <p class="text-white/75 text-[15px] leading-[25px] mb-10">
               Experience natural, lifelike audio and exceptional build quality made for the passionate music enthusiast.
             </p>
             <a routerLink="/product/xx99-mark-two-headphones" 
