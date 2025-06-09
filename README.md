@@ -1,53 +1,19 @@
-# E-commerce Website
+# Audiophile E-commerce Website
 
-A modern, feature-rich e-commerce website built with Angular and Tailwind CSS.
+A premium audio gear e-commerce platform built with Angular and Tailwind CSS. Experience high-end audio equipment shopping with a modern, responsive design.
 
-## Features
-
-- 📱 Responsive layout optimized for all screen sizes
-- 🛒 Full shopping cart functionality
-  - Add/remove products
-  - Update quantities
-  - Persist cart state
-- 💳 Secure checkout process
-- ✨ Interactive elements with hover states
-- 📦 Product catalog with detailed views
-- 💰 Accurate order calculations
-  - Product totals
-  - Fixed shipping cost ($50)
-  - VAT (20% of product total)
-- ✅ Form validation
-- 🎉 Order confirmation system
+![Audiophile Hero](src/assets/home/desktop/image-hero.jpg)
 
 ## Technical Stack
 
-- **Frontend Framework**: Angular
+- **Framework**: Angular 19
 - **Styling**: Tailwind CSS
-- **State Management**: Angular Services
-- **Form Handling**: Angular Reactive Forms
-- **Data Storage**: Local Storage for cart persistence
+- **State Management**: Angular Services + RxJS
+- **Form Handling**: Reactive Forms
+- **Storage**: Local Storage
+- **Type Safety**: TypeScript
+- **Routing**: Angular Router
 
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── components/
-│   │   ├── product-list/      # Product catalog display
-│   │   ├── product-detail/    # Individual product view
-│   │   ├── shopping-cart/     # Cart management
-│   │   ├── checkout/          # Checkout process
-│   │   ├── navbar/           # Navigation component
-│   │   └── footer/           # Footer component
-│   ├── services/
-│   │   ├── cart.service.ts    # Shopping cart logic
-│   │   └── product.service.ts # Product data management
-│   ├── models/
-│   │   ├── product.ts         # Product interface
-│   │   └── cart-item.ts       # Cart item interface
-│   └── shared/
-│       └── components/        # Reusable UI components
-```
 
 ## Getting Started
 
@@ -60,8 +26,8 @@ src/
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
-   cd ecommerce
+   git clone https://github.com/yourusername/audiophile-ecommerce.git
+   cd audiophile-ecommerce
    ```
 
 2. Install dependencies:
@@ -78,44 +44,34 @@ src/
 
 ## Development Guidelines
 
-### Coding Standards
+### Component Structure
 
-- Follow Angular style guide
-- Use TypeScript strict mode
-- Implement lazy loading for optimized performance
-- Write unit tests for components and services
+- Standalone components with explicit imports
+- Lazy-loaded feature modules
+- Shared components for reusability
+- Smart/Container component pattern
 
-### CSS Guidelines
+### Styling Approach
 
-- Use Tailwind CSS utility classes
-- Follow mobile-first approach
-- Maintain consistent spacing and color schemes
-- Use CSS variables for theme colors
+- Tailwind CSS utility classes
+- Mobile-first responsive design
+- Custom theme configuration
+- Consistent spacing and typography
 
-### Git Workflow
+### State Management
 
-1. Create feature branches from `main`
-2. Use conventional commits
-3. Submit pull requests for review
-4. Merge after approval
+- RxJS observables for reactive state
+- Service-based state management
+- Local storage persistence
+- Type-safe interfaces
 
-## Testing
 
-Run unit tests:
+
+## Building for Production
+
+Generate a production build:
 ```bash
-ng test
-```
-
-Run end-to-end tests:
-```bash
-ng e2e
-```
-
-## Build
-
-Generate production build:
-```bash
-ng build --prod
+ng build --configuration production
 ```
 
 The build artifacts will be stored in the `dist/` directory.
@@ -124,21 +80,30 @@ The build artifacts will be stored in the `dist/` directory.
 
 ### Shopping Cart
 
-- Real-time cart updates
-- Quantity adjustments
-- Price calculations including VAT
-- Cart persistence across sessions
+- Real-time total calculations
+- Quantity adjustments with validation
+- Persistent cart state using localStorage
+- Cart modal with summary view
 
 ### Checkout Process
 
-- Multi-step form validation
-- Shipping cost calculation
-- Order summary
-- Success confirmation
+- Step-by-step form validation
+- Multiple payment methods (e-Money, Cash on Delivery)
+- Shipping information collection
+- Order summary with price breakdown
+- Success confirmation modal
 
-### Product Catalog
+### Product Navigation
 
-- Grid and list views
-- Search functionality
-- Filtering options
-- Sorting capabilities
+- Category-based browsing
+- Detailed product pages
+- Related products suggestions
+- "You May Also Like" section
+
+### Responsive Design
+
+- Mobile menu with animations
+- Responsive images using picture element
+- Flexible grid layouts
+- Optimized typography
+
